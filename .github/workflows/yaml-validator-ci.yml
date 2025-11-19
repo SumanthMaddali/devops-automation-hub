@@ -3,8 +3,6 @@ name: YAML Validator - CI
 on:
   push:
     branches: ["main"]
-    paths:
-      - "services/yaml-validator/**"
 
 jobs:
   build-test-push:
