@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: yaml-validator
-        image: YOUR_DOCKERHUB_USERNAME/yaml-validator:latest
+        image: ${{ vars.DOCKERHUB_USERNAME }}/yaml-validator:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
