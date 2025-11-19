@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yaml-validator
+  labels:
+    app: yaml-validator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yaml-validator
+  template:
+    metadata:
+      labels:
+        app: yaml-validator
+    spec:
+      containers:
+      - name: yaml-validator
+        image: YOUR_DOCKERHUB_USERNAME/yaml-validator:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: "250m"
+            memory: "256Mi"
+          requests:
+            cpu: "50m"
+            memory: "64Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: yaml-validator-service
+spec:
+  selector:
+    app: yaml-validator
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+  type: ClusterIP

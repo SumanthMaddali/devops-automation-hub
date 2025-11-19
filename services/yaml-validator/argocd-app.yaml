@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: yaml-validator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'REPO_URL'                 # replace with your repo (git URL)
+    targetRevision: HEAD
+    path: 'services/yaml-validator/helm' # path to helm chart or manifests
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

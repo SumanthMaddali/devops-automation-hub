@@ -1,0 +1,40 @@
+name: YAML Validator - CI
+
+on:
+  push:
+    paths:
+      - "services/yaml-validator/**"
+  pull_request:
+    paths:
+      - "services/yaml-validator/**"
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        working-directory: services/yaml-validator/app
+        run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-mock
+
+      - name: Run tests
+        working-directory: services/yaml-validator
+        run: pytest -q
+
+      - name: Build Docker image
+        run: |
+          docker build -t yaml-validator:ci-test services/yaml-validator
+
+      - name: Dockerfile lint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: services/yaml-validator/Dockerfile
